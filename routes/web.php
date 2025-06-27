@@ -21,3 +21,5 @@ Route::post('/admin/dashboard/addTitle', [admin_Controller::class, 'addTitle']);
 Route::put('/admin/dashboard/editTitle/{id}', [admin_Controller::class, 'editTitle']);
 Route::delete('/admin/dashboard/deleteTitle', [admin_Controller::class, 'deleteTitle']);
 Route::put('/admin/dashboard/editMotivation/{id}', [admin_Controller::class, 'updateMotivation']);
+Route::post('/admin/dashboard/addMotivation', [admin_Controller::class, 'addMotivation']);
+Route::delete('/admin/dashboard/deleteMotivation', [admin_Controller::class, 'deleteMotivation']);

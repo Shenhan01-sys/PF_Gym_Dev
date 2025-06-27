@@ -82,24 +82,47 @@ class admin_controller extends Controller
         ]);
     }
 
-    public function updateMotivation(Request $request, $id)
+    public function updateMotivation(Request $request, $id_Motivation)
     {
-        Log::info('DB in updateMotivation', [
-            'driver' => DB::connection()->getDriverName(),
-            'db'     => DB::connection()->getDatabaseName(),
-        ]);
         $request->validate([
             'newAuthor' => 'required|string|max:255',
             'newMotivation' => 'required|string|max:255',
         ]);
 
-        $motivation = motivation_pf::findOrFail($id);
+        $motivation = motivation_pf::findOrFail($id_Motivation);
         $motivation->author = $request->newAuthor;
         $motivation->motivation_letter = $request->newMotivation;
         $motivation->save();
 
         return response()->json([
-            'updated_motivation' => 'Motivation letter edited successfully'
+            'updated_motivation' => $motivation->motivation_letter
+        ]);
+    }
+
+    public function addMotivation(Request $req)
+    {
+        $motivation = new motivation_pf;
+        $motivation->author = $req->input('newauthor');
+        $motivation->motivation_letter = $req->input('newmotivation');
+        $motivation->save();
+
+        return response()->json([
+            'new_motivation' => $motivation->motivation_letter
+        ]);
+
+    }
+
+    public function deleteMotivation(Request $req)
+    {
+        $req->validate([
+            'id_Motivation' => 'required|integer|exists:motivation__pf,id_Motivation',
+        ]);
+
+        $motivation = motivation_pf::find($req->id_Motivation);
+        $motivation->delete();
+
+        return response()->json([
+            'message' => 'Motivation deleted successfully'
         ]);
     }
 

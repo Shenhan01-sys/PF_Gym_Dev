@@ -8,13 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class motivation_pf extends Model
 {
     use HasFactory;
-    protected $fillable = 
+    protected $fillable =
     [
-        'motivation_letter', 
+        'motivation_letter',
         'author'
     ];
 
     protected $table = 'motivation__pf';
-    protected $primaryKey = 'id_motivation';
+    protected $primaryKey = 'id_Motivation';
     public $timestamps = true;
 }

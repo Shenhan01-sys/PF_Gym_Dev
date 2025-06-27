@@ -48,7 +48,7 @@
         <a href="#home"       class="group flex flex-col items-center gap-1 text-xs hover:text-rose-500"><i class="fas fa-home text-xl"></i><span>Home</span></a>
         <a href="#jadwal"     class="group flex flex-col items-center gap-1 text-xs hover:text-rose-500"><i class="fas fa-calendar-alt text-xl"></i><span>Jadwal</span></a>
         <a href="#program"    class="group flex flex-col items-center gap-1 text-xs hover:text-rose-500"><i class="fas fa-dumbbell text-xl"></i><span>Program</span></a>
-        <a href="#trainers"   class="group flex flex-col items-center gap-1 text-xs hover:text-rose-500"><i class="fas fa-user-friends text-xl"></i><span>Trainers</span></a>
+        <a href="#members"   class="group flex flex-col items-center gap-1 text-xs hover:text-rose-500"><i class="fas fa-user-friends text-xl"></i><span>Trainers</span></a>
         <a href="#fasilitas"  class="group flex flex-col items-center gap-1 text-xs hover:text-rose-500"><i class="fas fa-building text-xl"></i><span>Fasilitas</span></a>
         <a href="#harga"      class="group flex flex-col items-center gap-1 text-xs hover:text-rose-500"><i class="fas fa-tags text-xl"></i><span>Harga</span></a>
     </nav>
@@ -172,8 +172,8 @@
                                 </option>
                             @endforeach
                         </select>
-                        <input id="requestAuthor" class="bg-gray-200 text-gray-700 border border-gray-300 rounded px-4 py-2 w-full mt-6" type="text" class="border border-gray-300 rounded px-4 py-2 w-full mb-4" placeholder="Masukkan nama title baru">
-                        <input id="requestMotivation" class="bg-gray-200 text-gray-700 border border-gray-300 rounded px-4 py-2 w-full mt-6" type="text" class="border border-gray-300 rounded px-4 py-2 w-full mb-4" placeholder="Masukkan nama title baru">
+                        <input id="requestAuthor" class="bg-gray-200 text-gray-700 border border-gray-300 rounded px-4 py-2 w-full mt-6" type="text" class="border border-gray-300 rounded px-4 py-2 w-full mb-4" placeholder="Insert new author">
+                        <input id="requestMotivation" class="bg-gray-200 text-gray-700 border border-gray-300 rounded px-4 py-2 w-full mt-6" type="text" class="border border-gray-300 rounded px-4 py-2 w-full mb-4" placeholder="Insert new motivation">
                         <div class="flex justify-end gap-2 mt-4">
                             <button popovertarget="editPopupMot" popovertargetaction="hide"
                                     class="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500">Cancel</button>
@@ -185,9 +185,45 @@
                     <button popovertarget="addPopupMot" class="mt-2 mr-2 px-6 py-2 rounded-lg bg-green-500 text-white font-semibold hover:bg-green-600 transition">
                         Add
                     </button>
+                    <div id="addPopupMot"
+                        popover
+                        class=" popover-content
+                                transition duration-300 ease-out
+                                scale-95
+                                origin-center bg-black-700 p-6 rounded-lg shadow-xl w-120 z-50">
+                        <h3 class="text-lg text-white font-bold mb-3">Add Motivation letter</h3>
+                        <input id="newAuthor" class="bg-gray-200 text-gray-700 border border-gray-300 rounded px-4 py-2 w-full mt-6" type="text" class="border border-gray-300 rounded px-4 py-2 w-full mb-4" placeholder="Insert new author">
+                        <input id="newMotivationLetter" class="bg-gray-200 text-gray-700 border border-gray-300 rounded px-4 py-2 w-full mt-6" type="text" class="border border-gray-300 rounded px-4 py-2 w-full mb-4" placeholder="Insert new motivation">
+                        <div class="flex justify-end gap-2 mt-4">
+                            <button popovertarget="addPopupMot" popovertargetaction="hide"
+                                    class="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500">Cancel</button>
+                            <button popovertarget="addPopupMot" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" id="btnAddMot">Add</button>
+                        </div>
+                    </div>
                     <button popovertarget="delPopupMot" class="mt-2 mr-2 px-6 py-2 rounded-lg bg-red-500 text-white font-semibold hover:bg-red-600 transition">
                         Delete
                     </button>
+                    <div id="delPopupMot"
+                        popover
+                        class=" popover-content
+                                transition duration-300 ease-out
+                                scale-95
+                                origin-center bg-black-700 p-6 rounded-lg shadow-xl w-120 z-50">
+                        <h3 class="text-lg text-white font-bold mb-3">Delete Motivation</h3>
+                        <select class="bg-gray-200 text-gray-700 border border-gray-300 rounded px-4 py-2 w-full" id="selectedMotivationDelete">
+                            @foreach ($motivation as $select_motivation)
+                                <option value="{{$select_motivation['id_Motivation']}}">
+                                   Author : {{$select_motivation['author']}}
+                                   Text : {{$select_motivation['motivation_letter']}}
+                                </option>
+                            @endforeach
+                        </select>
+                        <div class="flex justify-end gap-2 mt-4">
+                            <button popovertarget="delPopupMot" popovertargetaction="hide"
+                                    class="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500">Cancel</button>
+                            <button popovertarget="delPopupMot" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" id="btnDeleteMot">Delete</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -242,18 +278,6 @@
                 </button>
             </div>
         </div>
-
-        <div class=" mt-1 flex justify-center">
-            <button class="mt-2 mr-2 px-6 py-2 rounded-lg bg-orange-500 text-white font-semibold hover:bg-orange-600 transition">
-                Edit
-            </button>
-            <button class="mt-2 mr-2 px-6 py-2 rounded-lg bg-green-700 text-white font-semibold hover:bg-green-600 transition">
-                Add
-            </button>
-            <button class="mt-2 mr-2 px-6 py-2 rounded-lg bg-red-700 text-white font-semibold hover:bg-red-600 transition">
-                Delete
-            </button>
-        </div>
     </section>
 
     <!-- Program Section -->
@@ -294,17 +318,17 @@
                         </div>
                     </div>
                 @endforeach
-            </div>
-            <div class=" mt-1 flex justify-center">
-                <button class="mt-2 mr-2 px-6 py-2 rounded-lg bg-orange-500 text-white font-semibold hover:bg-orange-600 transition">
-                    Edit
-                </button>
-                <button class="mt-2 mr-2 px-6 py-2 rounded-lg bg-green-700 text-white font-semibold hover:bg-green-600 transition">
-                    Add
-                </button>
-                <button class="mt-2 mr-2 px-6 py-2 rounded-lg bg-red-700 text-white font-semibold hover:bg-red-600 transition">
-                    Delete
-                </button>
+                <div class=" mt-1 flex justify-center">
+                    <button popovertarget="addPopupTrainer" class="mt-2 mr-2 px-6 py-2 rounded-lg bg-green-500 text-white font-semibold hover:bg-green-600 transition">
+                        Add
+                    </button>
+                    <button class="mt-2 mr-2 px-6 py-2 rounded-lg bg-orange-500 text-white font-semibold hover:bg-orange-600 transition">
+                        Edit
+                    </button>
+                    <button class="mt-2 mr-2 px-6 py-2 rounded-lg bg-red-700 text-white font-semibold hover:bg-red-600 transition">
+                        Delete
+                    </button>
+                </div>
             </div>
         </div>
     </section>
@@ -331,6 +355,24 @@
     <section id="harga" class="pricing">
         <div class="container">
             <h2 class="section-title">Paket Membership</h2>
+            <button popovertarget="addPopupPrice" class="mt-2 mr-2 px-6 py-2 rounded-lg bg-green-700 text-white font-semibold hover:bg-green-600 transition">
+                <i class="fa-solid fa-folder-plus mr-2"></i> Add New Package
+            </button>
+            <div id="addPopupPrice"
+                popover
+                class=" popover-content
+                        transition duration-300 ease-out
+                        scale-95
+                        origin-center bg-black-700 p-6 rounded-lg shadow-xl w-120 z-50">
+                <h3 class="text-lg text-white font-bold mb-3">Add Motivation letter</h3>
+                <input id="newAuthor" class="bg-gray-200 text-gray-700 border border-gray-300 rounded px-4 py-2 w-full mt-6" type="text" class="border border-gray-300 rounded px-4 py-2 w-full mb-4" placeholder="Insert new author">
+                <input id="newMotivationLetter" class="bg-gray-200 text-gray-700 border border-gray-300 rounded px-4 py-2 w-full mt-6" type="text" class="border border-gray-300 rounded px-4 py-2 w-full mb-4" placeholder="Insert new motivation">
+                <div class="flex justify-end gap-2 mt-4">
+                    <button popovertarget="addPopupPrice" popovertargetaction="hide"
+                            class="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500">Cancel</button>
+                    <button popovertarget="addPopupPrice" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" id="btnAddPrice">Add</button>
+                </div>
+            </div>
             <div class="pricing-grid">
                 @foreach ($packages as $pkg)
                     <div class="pricing-card {{ $pkg->is_popular ? 'featured' : '' }}">
@@ -351,6 +393,14 @@
                             @endforeach
                         </ul>
                         <button class="pricing-btn">Pilih Paket</button>
+                        <div class=" mt-1 flex justify-center">
+                            <button class="mt-2 mr-2 px-6 py-2 rounded-lg bg-orange-500 text-white font-semibold hover:bg-orange-600 transition">
+                                Edit
+                            </button>
+                            <button class="mt-2 mr-2 px-6 py-2 rounded-lg bg-red-700 text-white font-semibold hover:bg-red-600 transition">
+                                Delete
+                            </button>
+                        </div>
                     </div>
                 @endforeach
             </div>

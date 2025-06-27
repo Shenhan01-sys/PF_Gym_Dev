@@ -103,7 +103,6 @@ document.getElementById('btnSave').addEventListener('click', () => {
   });
 });
 
-
 document.getElementById('btnDelete').addEventListener('click', () => {
   const id = selectedTitleDelete.value;
     if (!id) return alert('Pilih judul yang akan dihapus');
@@ -177,6 +176,77 @@ document.getElementById('btnSaveMot').addEventListener('click', () => {
       console.error(err);
       alert('Gagal update Motivation letter: ' + err.message);
   });
+});
+
+const newAuthor = document.getElementById("newAuthor");
+const newMotivationLetter = document.getElementById("newMotivationLetter");
+document.getElementById("btnAddMot").addEventListener("click", function() {
+    const newAuthorValue = newAuthor.value.trim();
+    const newMativationValue = newMotivationLetter.value.trim();
+    if (!newAuthorValue && !newMativationValue) {
+        alert("Please enter a new motivation.");
+        return;
+    }
+
+    fetch('/admin/dashboard/addMotivation', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({
+            newauthor: newAuthorValue,
+            newmotivation: newMativationValue
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            alert('Failed to add title : ' + data.error);
+            window.location.assign('/admin/dashboard');
+        } else {
+            alert("new title added successfully " + data.new_motivation);
+            window.location.assign('/admin/dashboard');
+        }
+    })
+    .catch(error => {
+        console.error("Error adding title:", error);
+        alert("An error occurred while adding the title.", error);
+    });
+});
+
+const selectedMotivationDelete = document.getElementById('selectedMotivationDelete');
+document.getElementById('btnDeleteMot').addEventListener('click', () => {
+  const id = selectedMotivationDelete.value;
+    if (!id) return alert('Select a motivation to delete');
+    if (!confirm('Are you sure want to delte it?')) return;
+    fetch('/admin/dashboard/deleteMotivation', {
+        method : 'DELETE',
+        headers: {
+            'Content-Type':'application/json',
+            'X-CSRF-TOKEN':document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({
+            _method:'DELETE',
+            id_Motivation:id
+        })
+    })
+    .then(async r => {
+    if (!r.ok) {
+        const text = await r.text();
+        throw new Error(`HTTP ${r.status}: ${text.slice(0,100)}…`);
+    }
+    return r.json();
+    })
+    .then(data => {
+        alert(data.message);
+        document.getElementById('delPopupMot').hidePopover();
+        window.location.assign('/admin/dashboard');
+    })
+    .catch(err => {
+        console.error(err);
+        alert('Faied to delete: ' + err.message);
+    });
 });
 
 
